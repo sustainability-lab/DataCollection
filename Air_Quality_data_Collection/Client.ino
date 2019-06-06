@@ -11,6 +11,7 @@ const char *password = "12345678";
 #define pwmPin 14
 int prevVal = LOW;
 long th, tl, h, l, ppm, ppm2 = 0.0;
+String incoming;
 
 Adafruit_CCS811 ccs;
  
@@ -53,7 +54,7 @@ WiFi.mode(WIFI_OFF);        //Prevents reconnection issue (taking too long to co
   ccs.setTempOffset(temp - 25.0);
   
 }
- String ADCData, station, postData;
+ String ADCData, station, postData,ccs811;
 //=======================================================================
 //                    Main Program Loop
 //=======================================================================
@@ -62,14 +63,11 @@ void loop() {
  if(ccs.available()){
   digitalWrite(12,HIGH);
     float temp = ccs.calculateTemperature();
-//      Serial.println(temp);
+    ccs811=temp;
     if(!ccs.readData()){
-//      Serial.print("CO2: ");
       ppm=ccs.geteCO2();
-//      Serial.print("ppm, TVOC: ");
-//      Serial.print(ccs.getTVOC());
-//      Serial.print("ppb   Temp:");
-//      Serial.println(temp);
+      ccs811=ccs811+","+ppm + "ppm,"+String(ccs.getTVOC())+ "ppb";
+      Serial.println(ccs811);
     }
     else{
       Serial.println("ERROR!");
@@ -90,14 +88,17 @@ void loop() {
     } while (ppm2 < 0.0);
     digitalWrite(15,LOW); 
   //Post Data
+//while (Serial.available()>0 )
+//{
+//  if (Serial.available() > 0) { incoming = Serial.readString();}
+//}
   digitalWrite(13,HIGH);
-  postData =ppm ;
-  postData = postData +","+ppm2;
+  
+  postData = ccs811 +","+ppm2 +"ppm";//+incoming;
   Serial.println(postData);
   
   
-  http.begin("http://10.0.137.171:5005/");              //Specify request destination//10.0.71.32
-  //http.addHeader("Content-Type", "application/x-www-form-urlencoded");    //Specify content-type header
+  http.begin("http://10.0.137.171:5005/");              //Specify request destination//10.0.137.171
  
   int httpCode = http.POST(postData);   //Send the request
   String payload = http.getString();    //Get the response payload
