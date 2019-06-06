@@ -2,7 +2,7 @@ from flask import Flask, request
 import sys
 import datetime
 text_file=open("co2_data.csv","a+")
-text_file.write("Time,CO2 ppm(CCS811),CO2 ppm(Mhz19B) \n")
+text_file.write("Time,Temperature(C),CO2 ppm(CCS811),TvOC ppb(CCS811),CO2 ppm(Mhz19B) \n")
 text_file.close()
 a=0
 try:
@@ -23,8 +23,3 @@ except Exception as e:
     
 if __name__ == '__main__':
      app.run(host='0.0.0.0',port=5005)
-
-
-
-
-			
