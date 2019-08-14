@@ -5,7 +5,6 @@
 
 import re
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
 import datetime
 import time
@@ -195,7 +194,7 @@ while(1):
             mode='w',
             index=False)
     except Exception as e:
-            print("Error at time {}: \n {}\n".format(time_epoch,str(e)))
+            print("Error at time {}: \n {}\n".format(te,str(e)))
             print(traceback.format_exc())
             continue
     time.sleep(minute_interval*60)
