@@ -176,7 +176,7 @@ if __name__ == '__main__':
             print(int(row[1]), int(te), str(row[3]), str(
                                row[4]), str(row[5]), str(row[6]), str(row[7]))
             print(type(int(row[1])), type(int(te)), type(str(row[3])), type(str(row[4])), type(str(row[5])), type(str(row[6])), type(str(row[7])))
-            cursor.execute('''INSERT into occupancy VALUES(?,?,?,?,?,?,?)''',
+            cursor.execute('''INSERT into occupancy VALUES(%d,%d,%s,%s,%s,%s,%s)''',
                            (int(row[1]), int(te), str(row[3]), str(
                                row[4]), str(row[5]), str(row[6]), str(row[7])))
         db.commit()
