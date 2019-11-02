@@ -26,7 +26,7 @@ db = PyMySQL.connect(host="10.0.62.222",
 # prepare a cursor object using cursor() method
 cursor = db.cursor()
 cursor.execute(
-    'CREATE TABLE IF NOT EXISTS occupancy(anonID real, timeEpoch real,area varchar(10),building varchar(10),floor varchar(10) ,ap varchar(10), str varchar(50))'
+    'CREATE TABLE IF NOT EXISTS occupancy(anonID real, timeEpoch real, area varchar(10),building varchar(10),floor varchar(10) ,ap varchar(10), str varchar(50))'
 )
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -169,7 +169,7 @@ if __name__ == '__main__':
     else:
         last_anonid = 1
     minute_interval = 10
-    te = get_rounded_current_time_inEpoch(minute_interval)
+    te = int(get_rounded_current_time_inEpoch(minute_interval))
     try:
         temp_df = get_dataframe(te)
         for row in temp_df.itertuples():
@@ -177,7 +177,7 @@ if __name__ == '__main__':
                                row[4]), str(row[5]), str(row[6]), str(row[7]))
             print(type(row[1]), type(te), type(row[3]), type(row[4]), type(row[5]), type(row[6]), type(row[7]))
             data_to_insert = (row[1], te, row[3], row[4], row[5], row[6], row[7])
-            cursor.execute("INSERT into occupancy VALUES(%d,%d,%s,%s,%s,%s,%s)",data_to_insert)
+            cursor.execute("INSERT into occupancy VALUES(%s,%s,%s,%s,%s,%s,%s)",data_to_insert)
         db.commit()
 
         print('data collection at {} done'.format(te))
