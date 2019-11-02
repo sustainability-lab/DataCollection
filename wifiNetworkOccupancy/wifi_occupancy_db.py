@@ -65,7 +65,7 @@ def get_data(skip):
     data_json = json.loads(data.text)
     return data_json
 
-
+# Get Occupancy for campus at given time as a dataframe
 def get_dataframe(time_epoch):
     # The next 2 variables are used to assign anonymous user_id
     global anon_user
@@ -173,10 +173,6 @@ if __name__ == '__main__':
     try:
         temp_df = get_dataframe(te)
         for row in temp_df.itertuples():
-            print(int(row[1]), int(te), str(row[3]), str(
-                               row[4]), str(row[5]), str(row[6]), str(row[7]))
-            print(type(row[1]), type(te), type(row[3]), type(row[4]), type(row[5]), type(row[6]), type(row[7]))
-            data_to_insert = (row[1], te, row[3], row[4], row[5], row[6], row[7])
             cursor.execute("INSERT into occupancy VALUES(%s,%s,%s,%s,%s,%s,%s)",data_to_insert)
         db.commit()
 
